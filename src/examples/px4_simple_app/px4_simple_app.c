@@ -40,7 +40,7 @@
 ///* serial register accessors */
 #define REG(_x)		(*(volatile uint32_t *)(PX4FMU_SERIAL_BASE + _x))
 #define rSR		REG(STM32_USART_SR_OFFSET)
-//#define rDR		REG(STM32_USART_DR_OFFSET)
+#define rDR		REG(STM32_USART_DR_OFFSET)
 //#define rBRR		REG(STM32_USART_BRR_OFFSET)
 //#define rCR1		REG(STM32_USART_CR1_OFFSET)
 //#define rCR2		REG(STM32_USART_CR2_OFFSET)
@@ -51,6 +51,7 @@ __EXPORT int px4_simple_app_main(int argc, char *argv[]);
 
 int px4_simple_app_main(int argc, char *argv[])
 {
+	printf("%x\n", 0x40004800);
 	printf("Hello Sky~\n");
 	return OK;
 }
