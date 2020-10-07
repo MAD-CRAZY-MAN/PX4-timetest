@@ -1,0 +1,4 @@
+[0/3] Performing build step for 'px4io_firmware'
+ninja: no work to do.
+[2/3] No install step for 'px4io_firmware'
+[3/3] Completed 'px4io_firmware'
