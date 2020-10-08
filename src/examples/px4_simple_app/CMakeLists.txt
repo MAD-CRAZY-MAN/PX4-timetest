@@ -1,4 +1,5 @@
 px4_add_module(
+
 	MODULE examples__px4_simple_app
 	MAIN px4_simple_app
 	STACK_MAIN 2000
@@ -6,3 +7,4 @@ px4_add_module(
 		px4_simple_app.c
 	DEPENDS
 	)
+LINK_LIBRARIES(px4iofirmware)

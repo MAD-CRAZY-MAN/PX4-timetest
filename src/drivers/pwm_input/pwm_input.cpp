@@ -575,6 +575,7 @@ static void pwmin_test(void)
 
 	uint64_t start_time = hrt_absolute_time();
 
+	printf("%x %x %x %x\n", rCR1,rCR2, rSR, rCNT);
 	printf("Showing samples for 5 seconds\n");
 
 	while (hrt_absolute_time() < start_time + 5U * 1000UL * 1000UL) {

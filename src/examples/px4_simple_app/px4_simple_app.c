@@ -3,6 +3,10 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+
 
 #include <nuttx/arch.h>
 #include <arch/board/board.h>
@@ -38,20 +42,27 @@
 //static struct IOPacket	dma_packet;
 //
 ///* serial register accessors */
-#define REG(_x)		(*(volatile uint32_t *)(PX4FMU_SERIAL_BASE + _x))
+
+#define REG(_x)		(*(volatile uint32_t *)(STM32_USART2_BASE + _x))
 #define rSR		REG(STM32_USART_SR_OFFSET)
 #define rDR		REG(STM32_USART_DR_OFFSET)
-//#define rBRR		REG(STM32_USART_BRR_OFFSET)
-//#define rCR1		REG(STM32_USART_CR1_OFFSET)
-//#define rCR2		REG(STM32_USART_CR2_OFFSET)
-//#define rCR3		REG(STM32_USART_CR3_OFFSET)
-//#define rGTPR		REG(STM32_USART_GTPR_OFFSET)
+#define rBRR		REG(STM32_USART_BRR_OFFSET)
+#define rCR1		REG(STM32_USART_CR1_OFFSET)
+#define rCR2		REG(STM32_USART_CR2_OFFSET)
+#define rCR3		REG(STM32_USART_CR3_OFFSET)
+#define rGTPR		REG(STM32_USART_GTPR_OFFSET)
 
 __EXPORT int px4_simple_app_main(int argc, char *argv[]);
 
 int px4_simple_app_main(int argc, char *argv[])
 {
-	printf("%x\n", 0x40004800);
+	printf("rSR: %0X, %X\n", rSR, &rSR);
+	printf("rDR: %0X, %X\n", rDR, &rDR);
+	printf("rBRR: %0X, %X\n", rBRR, &rBRR);
+	printf("rCR1: %0X, %X\n", rCR1, &rCR1);
+	printf("rCR2: %0X, %X\n", rCR2, &rCR2);
+	printf("rCR3: %0X, %X\n", rCR3, &rCR3);
+	printf("rGTPR: %0X, %X\n", rGTPR, &rGTPR);
 	printf("Hello Sky~\n");
 	return OK;
 }
