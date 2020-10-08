@@ -43,7 +43,7 @@
 //
 ///* serial register accessors */
 
-#define REG(_x)		(*(volatile uint32_t *)(STM32_USART2_BASE + _x))
+#define REG(_x)		(*(volatile uint32_t *)(STM32_USART3_BASE + _x))
 #define rSR		REG(STM32_USART_SR_OFFSET)
 #define rDR		REG(STM32_USART_DR_OFFSET)
 #define rBRR		REG(STM32_USART_BRR_OFFSET)
@@ -52,17 +52,17 @@
 #define rCR3		REG(STM32_USART_CR3_OFFSET)
 #define rGTPR		REG(STM32_USART_GTPR_OFFSET)
 
-__EXPORT int px4_simple_app_main(int argc, char *argv[]);
+__EXPORT int fmu_registers_main(int argc, char *argv[]);
 
-int px4_simple_app_main(int argc, char *argv[])
+int fmu_registers_main(int argc, char *argv[])
 {
-	printf("rSR: %0X, %X\n", rSR, &rSR);
-	printf("rDR: %0X, %X\n", rDR, &rDR);
-	printf("rBRR: %0X, %X\n", rBRR, &rBRR);
-	printf("rCR1: %0X, %X\n", rCR1, &rCR1);
-	printf("rCR2: %0X, %X\n", rCR2, &rCR2);
-	printf("rCR3: %0X, %X\n", rCR3, &rCR3);
-	printf("rGTPR: %0X, %X\n", rGTPR, &rGTPR);
-	printf("Hello Sky~\n");
+	PX4_INFO("UART3(TELEM2) REGISTERS\n");
+	printf("rSR: %p, %p\n", rSR, &rSR);
+	printf("rDR: %p, %p\n", rDR, &rDR);
+	printf("rBRR: %p, %p\n", rBRR, &rBRR);
+	printf("rCR1: %p, %p\n", rCR1, &rCR1);
+	printf("rCR2: %p, %p\n", rCR2, &rCR2);
+	printf("rCR3: %p, %p\n", rCR3, &rCR3);
+	printf("rGTPR: %p, %p\n\n", rGTPR, &rGTPR);
 	return OK;
 }
