@@ -7,4 +7,3 @@ px4_add_module(
 		fmu_registers.c
 	DEPENDS
 	)
-LINK_LIBRARIES(px4iofirmware)

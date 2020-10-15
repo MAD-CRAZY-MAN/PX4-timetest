@@ -43,7 +43,7 @@
 //
 ///* serial register accessors */
 
-#define REG(_x)		(*(volatile uint32_t *)(STM32_USART3_BASE + _x))
+#define REG(_x)		(*(volatile uint32_t *)(STM32_USART2_BASE + _x))
 #define rSR		REG(STM32_USART_SR_OFFSET)
 #define rDR		REG(STM32_USART_DR_OFFSET)
 #define rBRR		REG(STM32_USART_BRR_OFFSET)
@@ -56,7 +56,7 @@ __EXPORT int fmu_registers_main(int argc, char *argv[]);
 
 int fmu_registers_main(int argc, char *argv[])
 {
-	PX4_INFO("UART3(TELEM2) REGISTERS\n");
+	PX4_INFO("USART2(TELEM1) REGISTERS\n");
 	printf("rSR: %p, %p\n", rSR, &rSR);
 	printf("rDR: %p, %p\n", rDR, &rDR);
 	printf("rBRR: %p, %p\n", rBRR, &rBRR);
