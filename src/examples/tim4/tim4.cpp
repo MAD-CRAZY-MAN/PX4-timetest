@@ -80,8 +80,8 @@
 #define rDCR		REG(STM32_GTIM_DCR_OFFSET)
 #define rDMAR		REG(STM32_GTIM_DMAR_OFFSET)
 
-
-
+extern"C" __EXPORT int publisher_main(int argc, char *argv[]);
+__EXPORT int tim4_main(int argc, char *argv[]);
 
 static void tim4_info(void)
 {
@@ -91,7 +91,7 @@ static void tim4_info(void)
 	exit(0);
 }
 
-static voi tim4_usage()
+static void tim4_usage()
 {
 	PX4_ERR("unrecognized command, try 'info', 'start', 'test'");
 }
@@ -103,12 +103,12 @@ int tim4_main(int argc, char *argv[])
 		return -1;
 	}
 
-	const cahr *verb = argv[1];
+	const char *verb = argv[1];
 
 	if (!strcmp(verb, "info")) {
 		tim4_info();
 	}
-
+/*
 	if (!strcmp(verb, "start")) {
 		tim4_start();
 	}
@@ -116,7 +116,7 @@ int tim4_main(int argc, char *argv[])
 	if (!strcmp(verb, "test")) {
 		tim4_test();
 	}
-
+*/
 	tim4_usage();
 
 	return -1;
