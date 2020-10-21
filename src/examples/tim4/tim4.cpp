@@ -80,8 +80,7 @@
 #define rDCR		REG(STM32_GTIM_DCR_OFFSET)
 #define rDMAR		REG(STM32_GTIM_DMAR_OFFSET)
 
-extern"C" __EXPORT int publisher_main(int argc, char *argv[]);
-__EXPORT int tim4_main(int argc, char *argv[]);
+extern "C" __EXPORT int tim4_main(int argc, char *argv[]);
 
 static void tim4_info(void)
 {
