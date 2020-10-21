@@ -80,13 +80,29 @@
 #define rDCR		REG(STM32_GTIM_DCR_OFFSET)
 #define rDMAR		REG(STM32_GTIM_DMAR_OFFSET)
 
+//PWM TIMER CHANNEL 2
+#define rCCR_PWMIN_A		rCCR2			/* compare register for PWMIN */
+#define DIER_PWMIN_A		(GTIM_DIER_CC2IE)	/* interrupt enable for PWMIN */
+#define SR_INT_PWMIN_A		GTIM_SR_CC2IF		/* interrupt status for PWMIN */
+#define rCCR_PWMIN_B		rCCR1			/* compare register for PWMIN */
+#define DIER_PWMIN_B		GTIM_DIER_CC1IE		/* interrupt enable for PWMIN */
+#define SR_INT_PWMIN_B		GTIM_SR_CC1IF		/* interrupt status for PWMIN */
+#define CCMR1_PWMIN		((0x01 << GTIM_CCMR1_CC2S_SHIFT) | (0x02 << GTIM_CCMR1_CC1S_SHIFT))
+#define CCMR2_PWMIN		0
+#define CCER_PWMIN		(GTIM_CCER_CC1P | GTIM_CCER_CC1E | GTIM_CCER_CC2E)
+#define SR_OVF_PWMIN		(GTIM_SR_CC1OF | GTIM_SR_CC2OF)
+#define SMCR_PWMIN_1		(0x06 << GTIM_SMCR_TS_SHIFT)
+#define SMCR_PWMIN_2		((0x04 << GTIM_SMCR_SMS_SHIFT) | SMCR_PWMIN_1)
+
 extern "C" __EXPORT int tim4_main(int argc, char *argv[]);
 
 static void tim4_info(void)
 {
 	PX4_INFO("CLOCK and TIMER SETTING\n");
-	printf("TIMER(APB1) CLOCK: %lu", PWMIN_TIMER_CLOCK);
-			
+	printf("TIMER(APB1) CLOCK: %lu\n", PWMIN_TIMER_CLOCK);
+	printf("PWMIN_TIMER: %d\n", PWMIN_TIMER);
+	printf("PWM_TIMER_CHANNEL: %d\n", PWMIN_TIMER_CHANNEL);
+	
 	exit(0);
 }
 
