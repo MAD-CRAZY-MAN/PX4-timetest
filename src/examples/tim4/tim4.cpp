@@ -80,13 +80,24 @@
 #define rDCR		REG(STM32_GTIM_DCR_OFFSET)
 #define rDMAR		REG(STM32_GTIM_DMAR_OFFSET)
 
+#define RCC_AHB1_EN	0x40023800 + 0x30
+
+#define GPIO_D		0x40020C00
+#define GPIO_REG(_reg)	(*(volatile uint32_t *)(GPIO_D+ _reg))
+#define MODER		GPIO_REG(0x00)
+#define AFRH		GPIO_REG(0x24)
+
 extern "C" __EXPORT int tim4_main(int argc, char *argv[]);
 
 static void timer_init()
 {
+	//init gpio
+	 *((volatile uint32_t *)RCC_AHB1_EN) |= (1<<3); //enable gpioD
+	MODER |= (1<<27);
+	AFRH |= (1<<21);
 	//init timer
 	*((volatile uint32_t *)PWMIN_TIMER_POWER_REG) |= PWMIN_TIMER_POWER_BIT; //tim4 rcc enable  
-	
+
 	//1. configure the output pin
 	rCCMR1 |= (0<<9 | 0 << 8); //CC2S output
 	
