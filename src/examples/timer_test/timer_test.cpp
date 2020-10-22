@@ -109,6 +109,7 @@ static void timer_init()
 		rCCMR1 ^= (1<<12);	
 
 	//3. program the period and the duty cycle
+	rPSC = 0;
 	rPSC |= 100000111001; //prescaler: 839
 	rARR = 0x0000;
 	rARR |= 0b1001; //counter period: 9(100ms)	
