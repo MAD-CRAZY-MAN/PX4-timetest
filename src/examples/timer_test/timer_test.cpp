@@ -87,7 +87,7 @@
 #define MODER		GPIO_REG(0x00)
 #define AFRH		GPIO_REG(0x24)
 
-extern "C" __EXPORT int tim4_main(int argc, char *argv[]);
+extern "C" __EXPORT int timer_test_main(int argc, char *argv[]);
 
 static void timer_init()
 {
@@ -109,10 +109,10 @@ static void timer_init()
 		rCCMR1 ^= (1<<12);	
 
 	//3. program the period and the duty cycle
-	rPSC |= 0b10000011001111; //prescaler: 8399
+	rPSC |= 0b1101000111; //prescaler: 839
 	rARR = 0x0000;
-	rARR |= 0b10011100001111; //counter period: 9999(1s)	
-	rCCR2 |= 0b1001110000111; //duty 50% output comapare mode
+	rARR |= 0b1001; //counter period: 9(100ms)	
+	rCCR2 |= 0b100; //duty 50% output comapare mode
 	
 	//4. set the preload bit in CCMRx and the ARPE bit in the CR1
 	rCCMR1 |= (1<<11); //output compare2 perload enable
@@ -180,15 +180,15 @@ static void timer_info(void)
 	exit(0);
 }
 
-static void tim4_usage()
+static void timer_test_usage()
 {
 	PX4_ERR("unrecognized command, try 'info', 'init' and 'start' or 'end'");
 }
 
-int tim4_main(int argc, char *argv[])
+int timer_test_main(int argc, char *argv[])
 {
 	if(argc <2){
-		tim4_usage();
+		timer_test_usage();
 		return -1;
 	}
 
@@ -210,7 +210,7 @@ int tim4_main(int argc, char *argv[])
 		timer_end();
 	}
 
-	tim4_usage();
+	timer_test_usage();
 
 	return -1;
 
