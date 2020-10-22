@@ -82,31 +82,59 @@
 
 extern "C" __EXPORT int tim4_main(int argc, char *argv[]);
 
-static void tim4_init()
+static void timer_init()
 {
 	//init timer
 	*((volatile uint32_t *)PWMIN_TIMER_POWER_REG) |= PWMIN_TIMER_POWER_BIT; //tim4 rcc enable  
+	
+	//1. configure the output pin
+	rCCMR1 |= (0<<9 | 0 << 8); //CC2S output
+	
+	//2. select the pwm mode - mode 1
+	rCCMR1 |= (1<<14 | 1<<13);
+	if (rCCMR1 & (1<<12))
+		rCCMR1 ^= (1<<12);	
+
+	//3. program the period and the duty cycle
 	rPSC |= 0b10000011001111; //prescaler: 8399
-	rARR |= 0b10011100001111; //counter period: 9999(1s)
+	rARR = 0x0000;
+	rARR |= 0b10011100001111; //counter period: 9999(1s)	
+	rCCR2 |= 0b1001110000111; //duty 50% output comapare mode
 	
-	rCR1 |= 1; //counter active
-	//rSMCR |= (1<<7); //slave
-	//init pwm channel
+	//4. set the preload bit in CCMRx and the ARPE bit in the CR1
+	rCCMR1 |= (1<<11); //output compare2 perload enable
+	rCR1 |= (1 | (1<<7)); //counter enable, Auto-reload perload enable
+
+
+	//5. slect the counting mode, DIR: upcounting
+	rCR1 &= 0b1111111110001111; 
+
+	exit(0);
 	
 
 }
-static void tim4_start()
+static void timer_start()
 {
-	//rCCR2 |= 0b1001110000111; //duty 50% output comapare mode
-
+	//1. enable the capture compare
+	rCCER |= (1<<4);	
+	//2. enable the counter
+	rCR1 |= 1;
+	       
+	exit(0);
 }
 
-static void tim4_end()
+static void timer_end()
 {
-
+	//disable the capture compare
+	if (rCCER & (1<<4))
+		rCCER ^= (1<<4);
+	//disable the counter
+	if (rCR1 & 1)
+		rCR1 ^= 1;
+	exit(0);
 }
 
-static void tim4_info(void)
+static void timer_info(void)
 {
 	PX4_INFO("CLOCK and TIMER SETTING\n");
 	printf("TIMER(APB1) CLOCK: %lu\n", PWMIN_TIMER_CLOCK);
@@ -149,19 +177,19 @@ int tim4_main(int argc, char *argv[])
 	const char *verb = argv[1];
 
 	if (!strcmp(verb, "info")) {
-		tim4_info();
+		timer_info();
 	}
 	
 	if (!strcmp(verb, "init")){
-		tim4_init();
+		timer_init();
 	}
 	
 	if (!strcmp(verb, "start")) {
-		tim4_start();
+		timer_start();
 	}
 
 	if (!strcmp(verb, "end")) {
-		tim4_end();
+		timer_end();
 	}
 
 	tim4_usage();
