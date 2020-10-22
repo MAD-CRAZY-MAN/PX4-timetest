@@ -114,7 +114,7 @@ static void timer_init()
 	
 	//4. set the preload bit in CCMRx and the ARPE bit in the CR1
 	rCCMR1 |= (1<<11); //output compare2 perload enable
-	rCR1 |= (1 | (1<<7)); //counter enable, Auto-reload perload enable
+	rCR1 |= (1<<7); //counter enable, Auto-reload perload enable
 
 
 	//5. slect the counting mode, DIR: upcounting
@@ -147,6 +147,11 @@ static void timer_end()
 
 static void timer_info(void)
 {
+	PX4_INFO("GPIO SETTING\n");
+	printf("RCC_EN %x\n", *((volatile uint32_t *)(RCC_AHB1_EN)));
+	printf("MODER %x\n", MODER);
+	printf("AFRH %x\n", AFRH);
+
 	PX4_INFO("CLOCK and TIMER SETTING\n");
 	printf("TIMER(APB1) CLOCK: %lu\n", PWMIN_TIMER_CLOCK);
 	printf("PWMIN_TIMER: %d\n", PWMIN_TIMER);
@@ -162,8 +167,8 @@ static void timer_info(void)
 	printf("rCCMR2: %x\n", rCCMR2);
 	printf("rCCER: %x\n", rCCER);
 	printf("rCNT: %x\n", rCNT);
-	printf("prescaler: %d\n", rPSC);
-	printf("ARR: %d\n", rARR);
+	printf("prescaler: %x\n", rPSC);
+	printf("ARR: %x\n", rARR);
 	printf("rCCR1: %x\n", rCCR1);
 	printf("rCCR2: %x\n", rCCR2);
 	printf("rCCR3: %x\n", rCCR3);
