@@ -94,6 +94,8 @@ static void timer_init()
 	//init gpio
 	 *((volatile uint32_t *)RCC_AHB1_EN) |= (1<<3); //enable gpioD
 	MODER |= (1<<27);
+	if (MODER & (1<<26))
+		MODER ^= (1<<26);
 	AFRH |= (1<<21);
 	//init timer
 	*((volatile uint32_t *)PWMIN_TIMER_POWER_REG) |= PWMIN_TIMER_POWER_BIT; //tim4 rcc enable  
@@ -150,7 +152,7 @@ static void timer_info(void)
 	PX4_INFO("GPIO SETTING\n");
 	printf("RCC_EN %x\n", *((volatile uint32_t *)(RCC_AHB1_EN)));
 	printf("MODER %x\n", MODER);
-	printf("AFRH %x\n", AFRH);
+	printf("AFRH %x\n\n", AFRH);
 
 	PX4_INFO("CLOCK and TIMER SETTING\n");
 	printf("TIMER(APB1) CLOCK: %lu\n", PWMIN_TIMER_CLOCK);
