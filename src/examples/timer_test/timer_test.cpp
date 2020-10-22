@@ -91,7 +91,6 @@ extern "C" __EXPORT int timer_test_main(int argc, char *argv[]);
 
 static void timer_init()
 {
-	uint32_t prescaler = 84000000UL / 100000UL;
 	//init gpio
 	 *((volatile uint32_t *)RCC_AHB1_EN) |= (1<<3); //enable gpioD
 	MODER |= (1<<27);
@@ -110,7 +109,7 @@ static void timer_init()
 		rCCMR1 ^= (1<<12);	
 
 	//3. program the period and the duty cycle
-	rPSC |= prescaler - 1; //prescaler: 8599
+	rPSC |= 100000111001; //prescaler: 839
 	rARR = 0x0000;
 	rARR |= 0b1001; //counter period: 9(100ms)	
 	rCCR2 |= 0b100; //duty 50% output comapare mode
