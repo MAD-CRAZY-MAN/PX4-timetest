@@ -80,35 +80,63 @@
 #define rDCR		REG(STM32_GTIM_DCR_OFFSET)
 #define rDMAR		REG(STM32_GTIM_DMAR_OFFSET)
 
-//PWM TIMER CHANNEL 2
-#define rCCR_PWMIN_A		rCCR2			/* compare register for PWMIN */
-#define DIER_PWMIN_A		(GTIM_DIER_CC2IE)	/* interrupt enable for PWMIN */
-#define SR_INT_PWMIN_A		GTIM_SR_CC2IF		/* interrupt status for PWMIN */
-#define rCCR_PWMIN_B		rCCR1			/* compare register for PWMIN */
-#define DIER_PWMIN_B		GTIM_DIER_CC1IE		/* interrupt enable for PWMIN */
-#define SR_INT_PWMIN_B		GTIM_SR_CC1IF		/* interrupt status for PWMIN */
-#define CCMR1_PWMIN		((0x01 << GTIM_CCMR1_CC2S_SHIFT) | (0x02 << GTIM_CCMR1_CC1S_SHIFT))
-#define CCMR2_PWMIN		0
-#define CCER_PWMIN		(GTIM_CCER_CC1P | GTIM_CCER_CC1E | GTIM_CCER_CC2E)
-#define SR_OVF_PWMIN		(GTIM_SR_CC1OF | GTIM_SR_CC2OF)
-#define SMCR_PWMIN_1		(0x06 << GTIM_SMCR_TS_SHIFT)
-#define SMCR_PWMIN_2		((0x04 << GTIM_SMCR_SMS_SHIFT) | SMCR_PWMIN_1)
-
 extern "C" __EXPORT int tim4_main(int argc, char *argv[]);
+
+static void tim4_init()
+{
+	//init timer
+	*((volatile uint32_t *)PWMIN_TIMER_POWER_REG) |= PWMIN_TIMER_POWER_BIT; //tim4 rcc enable  
+	rPSC |= 0b10000011001111; //prescaler: 8399
+	rARR |= 0b10011100001111; //counter period: 9999(1s)
+	
+	rCR1 |= 1; //counter active
+	//rSMCR |= (1<<7); //slave
+	//init pwm channel
+	
+
+}
+static void tim4_start()
+{
+	//rCCR2 |= 0b1001110000111; //duty 50% output comapare mode
+
+}
+
+static void tim4_end()
+{
+
+}
 
 static void tim4_info(void)
 {
 	PX4_INFO("CLOCK and TIMER SETTING\n");
 	printf("TIMER(APB1) CLOCK: %lu\n", PWMIN_TIMER_CLOCK);
 	printf("PWMIN_TIMER: %d\n", PWMIN_TIMER);
-	printf("PWM_TIMER_CHANNEL: %d\n", PWMIN_TIMER_CHANNEL);
+	printf("PWM_TIMER_CHANNEL: %d\n\n", PWMIN_TIMER_CHANNEL);
 	
+	printf("rCR1: %x\n", rCR1);
+	printf("rCR2: %x\n", rCR2);
+	printf("rSMCR: %x\n", rSMCR);
+	printf("rDIER: %x\n", rDIER);
+	printf("rSR: %x\n", rSR);
+	printf("rEGR: %x\n", rEGR);
+	printf("rCCMR1: %x\n", rCCMR1);
+	printf("rCCMR2: %x\n", rCCMR2);
+	printf("rCCER: %x\n", rCCER);
+	printf("rCNT: %x\n", rCNT);
+	printf("prescaler: %d\n", rPSC);
+	printf("ARR: %d\n", rARR);
+	printf("rCCR1: %x\n", rCCR1);
+	printf("rCCR2: %x\n", rCCR2);
+	printf("rCCR3: %x\n", rCCR3);
+	printf("rCCR4: %x\n", rCCR4);
+	printf("rDCR: %x\n", rDCR);
+	printf("rDMAR: %x\n", rDMAR);
 	exit(0);
 }
 
 static void tim4_usage()
 {
-	PX4_ERR("unrecognized command, try 'info', 'start', 'test'");
+	PX4_ERR("unrecognized command, try 'info', 'init' and 'start' or 'end'");
 }
 
 int tim4_main(int argc, char *argv[])
@@ -123,15 +151,19 @@ int tim4_main(int argc, char *argv[])
 	if (!strcmp(verb, "info")) {
 		tim4_info();
 	}
-/*
+	
+	if (!strcmp(verb, "init")){
+		tim4_init();
+	}
+	
 	if (!strcmp(verb, "start")) {
 		tim4_start();
 	}
 
-	if (!strcmp(verb, "test")) {
-		tim4_test();
+	if (!strcmp(verb, "end")) {
+		tim4_end();
 	}
-*/
+
 	tim4_usage();
 
 	return -1;
